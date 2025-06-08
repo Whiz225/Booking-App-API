@@ -10,22 +10,8 @@ exports.createBooking = factoryController.createOne(Bookings);
 exports.updateBooking = factoryController.UpdateDoc(Bookings);
 exports.deleteBooking = factoryController.deleteOne(Bookings);
 
-function getBookingsAfterDate(date) {
-  //   .select("created_at, totalPrice, extrasPrice")
-  //   .gte("created_at", date)
-  //   .lte("created_at", getToday({ end: true }));
-}
-
-// Returns all STAYS that are were created after the given date
-function getStaysAfterDate(date) {
-  //   .select("*, guests(fullName)")
-  //   .gte("startDate", date)
-  // .lte("startDate", getToday());
-}
-
 exports.getBookingsAfterDate = catchAsync(async (req, res, next) => {
   const date = req.params.date;
-  console.log(date);
   const plan = await Bookings.aggregate([
     {
       $match: {
@@ -35,18 +21,7 @@ exports.getBookingsAfterDate = catchAsync(async (req, res, next) => {
         },
       },
     },
-    // {
-    //   $group: {
-    //     _id: { $paid: '$isPaid' },
-    //     numBookingStats: { $sum: 1 },
-    //     booking: { $push: '$fullName' },
-    //   },
-    // },
-    // { $sort: { numBookingStats: -1 } },
-    // { $limit: 10 },
   ]);
-
-  console.log(plan);
 
   res.status(200).json({
     status: 'success',
@@ -58,7 +33,6 @@ exports.getBookingsAfterDate = catchAsync(async (req, res, next) => {
 
 exports.getStaysAfterDate = catchAsync(async (req, res, next) => {
   const date = req.params.date;
-  console.log(date);
   const plan = await Bookings.aggregate([
     {
       $match: {
@@ -68,18 +42,7 @@ exports.getStaysAfterDate = catchAsync(async (req, res, next) => {
         },
       },
     },
-    // {
-    //   $group: {
-    //     _id: { $paid: '$isPaid' },
-    //     numBookingStats: { $sum: 1 },
-    //     booking: { $push: '$fullName' },
-    //   },
-    // },
-    // { $sort: { numBookingStats: -1 } },
-    // { $limit: 10 },
   ]);
-
-  console.log(plan);
 
   res.status(200).json({
     status: 'success',

@@ -5,10 +5,6 @@ const AppError = require('../utils/AppError.js');
 const catchAsync = require('../utils/catchAsync.js');
 
 exports.getSettings = factoryController.getAll(Settings);
-// exports.updateSetting = factoryController.UpdateDoc(Settings);
-// exports.getAllGuests = factoryController.getAll(Guests);
-// exports.createGuest = factoryController.createOne(Guests);
-// exports.deleteGuest = factoryController.deleteOne(Guests);
 
 exports.updateSetting = catchAsync(async (req, res, next) => {
   const doc = await Settings.findByIdAndUpdate(

@@ -37,7 +37,6 @@ const creatSendToken = (user, statusCode, res) => {
 };
 
 exports.singUp = catchAsync(async (req, res, next) => {
-  console.log(req.body);
   const newUser = await Users.create({
     fullName: req.body.fullName,
     email: req.body.email,
@@ -70,7 +69,6 @@ exports.logOut = catchAsync(async (req, res, next) => {
 });
 
 exports.login = catchAsync(async (req, res, next) => {
-  console.log(req.body);
   const { email, password } = req.body;
   if (!email || !password)
     return next(new AppError('Please provide your email and password'), 400);
@@ -155,7 +153,6 @@ exports.isLoggedIn = async (req, res, next) => {
 
 exports.restrictTo = (...roles) => {
   return function (req, res, next) {
-    console.log(req.user.role);
     if (!roles.join(' ').includes(req.user.role))
       return next(
         new AppError('Your are not permitted to perform this action!', 403),

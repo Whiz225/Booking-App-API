@@ -16,11 +16,6 @@ exports.deleteOne = (model) =>
 
 exports.createOne = (model) =>
   catchAsync(async (req, res, next) => {
-    // const newTour = new model(req.body);
-    // await newTour.save();
-    // if(req.file?.filename)
-    console.log('Body',req.body)
-    console.log('file',req.file)
     if (!req.body.image) req.body.image = req.file.filename;
 
     const newTour = await model.create(req.body);
@@ -37,7 +32,6 @@ exports.UpdateDoc = (model) =>
     req.body.image = req.body.filename;
 
     const { id } = req.params;
-    console.log(id);
     const doc = await model.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
