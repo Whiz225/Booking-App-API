@@ -21,12 +21,10 @@ const creatSendToken = (user, statusCode, res) => {
     secure: false,
     sameSite: 'Lax',
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
   };
 
-  if (process.env.NODE_ENV === 'production') {
-    cookieOptions.secure = true;
-    cookieOptions.sameSite = 'None';
-  }
   res.cookie('jwt', token, cookieOptions);
 
   res.status(statusCode).json({
