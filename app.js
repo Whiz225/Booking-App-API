@@ -24,7 +24,10 @@ const app = express();
 //Enable CORS for all origins (during development)
 // access to only my frontend
 app.use(
-  cors({ origin: ['http://localhost:5173/Booking-App/','https://booking-app-v2.onrender.com'], credentials: true }),
+  cors({
+    origin: ['http://localhost:5173', 'https://booking-app-v2.onrender.com'],
+    credentials: true,
+  }),
 );
 // access to all
 // app.use(cors())
