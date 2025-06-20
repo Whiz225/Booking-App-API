@@ -16,7 +16,7 @@ exports.deleteOne = (model) =>
 
 exports.createOne = (model) =>
   catchAsync(async (req, res, next) => {
-    if (!req.body.image) req.body.image = req.file.filename;
+    if (!req.body.image) req.body.image = req?.file?.filename;
 
     const newTour = await model.create(req.body);
     res.status(201).json({
@@ -29,10 +29,10 @@ exports.createOne = (model) =>
 
 exports.UpdateDoc = (model) =>
   catchAsync(async (req, res, next) => {
-    req.body.image = req.body.filename;
+    req.body.image = req.body?.filename;
 
-    const { id } = req.params;
-    const doc = await model.findByIdAndUpdate(id, req.body, {
+    const { id, guestId } = req.params;
+    const doc = await model.findByIdAndUpdate(id || guestId, req.body, {
       new: true,
       runValidators: true,
     });
@@ -49,9 +49,13 @@ exports.UpdateDoc = (model) =>
 
 exports.getOne = (model, popOption) =>
   catchAsync(async (req, res, next) => {
-    const { id } = req.params;
-    let query = model.findById(id);
+    const { id, guestId } = req.params;
+    // console.log('id', id, 'guest', guestId);
+    let query;
+    if (id) query = model.findById(id);
+    if (guestId) query = model.find({ guestId });
     if (popOption) query = query.populate(popOption);
+
     const doc = await query;
     // const tour = await Tour.findById(id);
     // const tour = await Tour.findOne({ _id: req.params.id });

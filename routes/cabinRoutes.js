@@ -4,6 +4,10 @@ const authController = require('../controller/authController');
 
 const router = express.Router();
 
+router.route('/web/:id').get(cabinController.getCabin);
+// .patch(cabinController.updateCabin);
+router.route('/web').get(cabinController.getAllCabins);
+
 router.route('/').get(cabinController.getAllCabins).post(
   authController.protect,
   // cabinController.checkCabinPhoto,

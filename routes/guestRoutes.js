@@ -4,6 +4,11 @@ const authController = require('../controller/authController');
 
 const router = express.Router();
 
+router.route('/newGuest').post(guestController.createGuest);
+router.route('/:guestId').patch(guestController.updateGuest);
+router.route('/web').post(guestController.getGuest);
+// .delete( guestController.deleteGuest);
+
 router.use(authController.protect);
 
 router

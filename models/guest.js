@@ -10,12 +10,15 @@ const guestSchema = new mongoose.Schema({
     type: String,
     required: [true, 'PLease provide your email address!'],
   },
-  nationality: {
-    type: String,
-    required: [true, 'Please provide your nationality!'],
-  },
-  nationalID: { type: Number, required: 'Please provide your nationalID:)' },
+  nationality: String,
+  nationalID: Number,
   countryFlag: String,
+  // nationality: {
+  //   type: String,
+  //   required: [true, 'Please provide your nationality!'],
+  // },
+  // nationalID: { type: Number, required: 'Please provide your nationalID:)' },
+  // countryFlag: String,
   // guides: [
   //   {
   //     type: mongoose.Schema.ObjectId,

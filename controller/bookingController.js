@@ -52,6 +52,40 @@ exports.getStaysAfterDate = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getBookedDatesByCabinId = catchAsync(async (req, res, next) => {
+  // const { cabinId } = req.params;
+
+  let today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  today = today.toISOString();
+
+  const plan = await Bookings.aggregate([
+    {
+      $match: {
+        startDate: {
+          $gte: new Date(today),
+        },
+        status: 'checked-in',
+        // cabinId: cabinId,
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      plan,
+    },
+  });
+});
+
+// // Getting all bookings
+// const { data, error } = await supabase
+//   .from("bookings")
+//   .select("*")
+//   .eq("cabinId", cabinId)
+//   .or(`startDate.gte.${today},status.eq.checked-in`);
+
 // exports.getTourStats = catchAsync(async function (req, res, next) {
 //   const stats = await Tour.aggregate([
 //     { $match: { ratingsAverage: { $gte: 4.5 } } },

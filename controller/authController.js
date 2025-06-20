@@ -5,6 +5,7 @@ const Users = require('./../models/user');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { promisify } = require('util');
+const Guests = require('../models/guest');
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -18,7 +19,7 @@ const creatSendToken = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000,
     ),
-    secure: false,
+    // secure: false,
     sameSite: 'Lax',
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -238,4 +239,46 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   creatSendToken(user, 201, res);
+});
+
+exports.protectByEmail = catchAsync(async (req, res, next) => {
+  console.log('called');
+  // 1) getting token and check if it's there
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+
+  if (!token)
+    return next(
+      new AppError('You are not logged in! Please log in to get access.', 401),
+    );
+  // 2) verification of token
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  // 3) check if user still exists
+  const guest = await Guests.findById(decoded.id);
+  if (!guest)
+    return next(
+      new AppError(
+        'The user belonging to this token does no longer exist.',
+        404,
+      ),
+    );
+
+  console.log(guest);
+  // 4) check if user changed password after the JWT token was issued
+  // if (guest.changedPasswordAfter(decoded.iat)) {
+  //   return next(
+  //     new AppError('User recently changed password! Please log in again', 404),
+  //   );
+  // }
+  res.locals.guest = guest;
+  req.guest = guest;
+
+  next();
 });

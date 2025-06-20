@@ -4,6 +4,9 @@ const authController = require('../controller/authController');
 
 const router = express.Router();
 
+router.route('/web')
+  .get(settingController.getSettings)
+
 router.use(authController.protect);
 
 router

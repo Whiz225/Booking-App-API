@@ -22,12 +22,17 @@ const bookingSchema = new mongoose.Schema(
       ref: 'Guests',
       required: [true, 'A booking must have a user'],
     },
-    discount: Number,
-    // discount: { type: Number, default: 0 },
+    totalPrice: Number,
+    discount: { type: Number, default: 0 },
     hasBreakfast: { type: Boolean, default: false },
-    isPaid: Boolean,
+    isPaid: { type: Boolean, default: false },
     numGuests: { type: Number, required: true },
-    observations: String,
+    observations: {
+      type: String,
+      min: [10, 'Not less than 10 characters'],
+      max: [1000, 'Not more than 1000 characters'],
+    },
+    extrasPrice: { type: Number, default: 0 },
   },
   {
     toJSON: { virtuals: true },
@@ -38,7 +43,7 @@ const bookingSchema = new mongoose.Schema(
 bookingSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'cabinId',
-    select: 'name',
+    select: 'name image',
   })
     .populate({
       path: 'guestId',
@@ -46,7 +51,7 @@ bookingSchema.pre(/^find/, function (next) {
     })
     .select('+createdAt');
 
-    this.id = this._id
+  this.id = this._id;
   next();
 });
 
