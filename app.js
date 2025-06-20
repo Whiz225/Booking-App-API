@@ -29,6 +29,7 @@ app.use(
     origin: [
       'http://localhost:5173',
       'http://localhost:3000',
+      'https://booking-app-v1-website.vercel.app',
       'https://booking-app-v2.onrender.com',
     ],
     credentials: true,
