@@ -33,7 +33,7 @@ const server = app.listen(port, () => {
 // });
 
 process.on('uncaughtException', (err) => {
-  console.log('UNCAUGHT EXCEPTION! shutting down...');
+  // console.log('UNCAUGHT EXCEPTION! shutting down...');
   console.log('ERROR 💥💥💥: ', err.name, err.message);
   server.close(() => process.exit(1));
 });

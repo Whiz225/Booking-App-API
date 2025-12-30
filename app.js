@@ -5,6 +5,7 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const guestRoutes = require('./routes/guestRoutes');
 const userRoutes = require('./routes/userRoutes');
 const settingRoutes = require('./routes/settingRoutes');
+const worldwiseAppRoutes = require('./routes/worldwiseAppRoutes');
 const globalErrorHandler = require('./controller/errorController');
 const AppError = require('./utils/AppError');
 
@@ -28,6 +29,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:5173',
+      'http://localhost:5174',
       'http://localhost:3000',
       'https://booking-app-v1-website.vercel.app',
       'https://booking-app-v2.onrender.com',
@@ -83,6 +85,7 @@ app.use('/api/v1/bookings', bookingRoutes);
 app.use('/api/v1/guests', guestRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/settings', settingRoutes);
+app.use('/api/v1/worldwise', worldwiseAppRoutes);
 
 // app.all('*', (req, res, next) => {
 //   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

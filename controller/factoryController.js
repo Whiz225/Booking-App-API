@@ -18,6 +18,7 @@ exports.createOne = (model) =>
   catchAsync(async (req, res, next) => {
     if (!req.body.image) req.body.image = req?.file?.filename;
 
+    console.log("newCity", req.body)
     const newTour = await model.create(req.body);
     res.status(201).json({
       status: 'success',
